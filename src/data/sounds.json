@@ -1,0 +1,16 @@
+[
+  {
+    "id": "rain",
+    "label": "Heavy Rain",
+    "icon": "CloudRain",
+    "src": "/sounds/rain.mp3",
+    "color": "bg-blue-600"
+  },
+  {
+    "id": "bird",
+    "label": "Forest Birds",
+    "icon": "Bird",
+    "src": "/sounds/bird.mp3",
+    "color": "bg-green-600"
+  }
+]
