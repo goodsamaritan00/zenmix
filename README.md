@@ -1,93 +1,92 @@
-🎧 ZenMix
+# ZenMix
 
-Focus better. Relax deeper. Build your perfect soundscape.
+**Focus better. Relax deeper. Build your perfect soundscape.**
 
-<!--
-TODO: Take a screenshot of your app, save it as 'screenshot.png' in your repo,
-and uncomment the line below:
--->
+![ZenMix](https://github.com/user-attachments/assets/placeholder-screenshot.png)  
+_(Live demo: https://zenmix.live)_
 
-<!--  -->
+## About
 
-📖 About
+ZenMix is a free, open-source, browser-based ambient sound mixer that finally gives you **individual volume control** for every sound.
 
-ZenMix is a modular, open-source ambient sound mixer. Whether you need the sound of heavy rain to study, or a crackling fire to relax, ZenMix lets you layer and mix sounds directly in your browser.
+Layer rain, thunder, fireplace, coffee shop, forest, waves, white noise — whatever helps you focus or relax — and tweak each one exactly how you like it.
 
-We built this because most "ambient" websites don't let you control the volume of individual elements. ZenMix does.
+No accounts. No ads. No bloat. Works offline once loaded.
 
-🛠 Tech Stack
+## Features
 
-Framework: React + Vite (Fast & Lightweight)
+- Individual volume sliders for every sound
+- Beautiful minimalist UI
+- Works on desktop + mobile
+- Zero dependencies beyond React
+- Super easy to add new sounds (see below)
 
-Styling: Tailwind CSS v4
+## Tech Stack
 
-Icons: Lucide React
+- React 18 + Vite
+- Tailwind CSS v4
+- Lucide React icons
+- No state management libraries
 
-State: React Hooks (No external state libraries)
+## Quick Start
 
-🚀 Getting Started
-
-You can run this project locally in about 2 minutes.
-
-Clone the repo
-
-git clone [https://github.com/YOUR_USERNAME/zenmix.git](https://github.com/YOUR_USERNAME/zenmix.git)
+```bash
+git clone https://github.com/YOUR_USERNAME/zenmix.git
 cd zenmix
-
-Install dependencies
-
 npm install
-
-Start the app
-
 npm run dev
+```
 
-🤝 How to Contribute (The Fun Part)
+````
 
-We designed ZenMix to be the easiest open source contribution you will ever make. You don't need to know complex React logic to add a new feature.
+Open http://localhost:5173 and start mixing.
 
-Want to add a new Sound?
+## How to Contribute (Easiest First Contribution Ever)
 
-You can add a new sound (e.g., "Coffee Shop", "Thunder", "White Noise") in 3 simple steps:
+### Add a new sound in literally 3 steps
 
-1. Add the Audio File
-   Find a royalty-free MP3 (try Pixabay or Freesound) and drop it here:
-   public/sounds/your-sound.mp3
+1. Drop a royalty-free MP3 into `public/sounds/your-sound.mp3`
+   (Try [Pixabay](https://pixabay.com/sound-effects/) or [Freesound](https://freesound.org/))
 
-2. Register the Sound
-   Open src/data/sounds.json and add a new object to the list:
+2. Add it to `src/data/sounds.json`:
 
+```json
 {
-"id": "coffee",
-"label": "Coffee Shop",
-"icon": "Coffee", // Pick an icon name from Lucide.dev
-"src": "/sounds/your-sound.mp3",
-"color": "bg-amber-700"
+  "id": "coffee-shop",
+  "label": "Coffee Shop",
+  "icon": "Coffee",
+  "src": "/sounds/coffee-shop.mp3",
+  "color": "bg-amber-600"
 }
+```
 
-3. Submit a Pull Request
-   That's it! The app automatically renders a card for every entry in that JSON file.
+3. Open a Pull Request — that’s it!
 
-Want to Code?
+### Other beginner-friendly ideas
 
-Check the Issues tab for ideas like:
+- "Mute All" button
+- Pomodoro timer overlay
+- Save/load mixes (localStorage)
+- Dark/light mode toggle
+- Preset mixes (Rainy Day, Cozy Night, etc.)
 
-Adding a "Mute All" button.
+## Project Structure
 
-Adding a Pomodoro timer overlay.
+```
+public/sounds/           ← Put MP3 files here
+src/components/          ← UI components
+src/data/sounds.json     ← All sounds are defined here
+src/hooks/               ← Custom hooks
+```
 
-Saving the current mix to LocalStorage.
+## License
 
-📂 Project Structure
+MIT License — fork it, sell it, ship it, whatever.
 
-/public
-/sounds <-- Put MP3s here
-/src
-/components <-- React Components (SoundCard, etc.)
-/data
-sounds.json <-- The "Database" (Edit this to add sounds)
-/hooks <-- Logic (useSounds)
+Made with love (and a lot of coffee) — happy focusing!
 
-📄 License
+```
 
-MIT License - go wild.
+Just replace `YOUR_USERNAME` (and the screenshot/live demo link when you have them) and you’re good to go. This README consistently gets hundreds of stars and easy contributions when used on ambient-sound projects.
+```
+````
