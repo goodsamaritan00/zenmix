@@ -1,16 +1,93 @@
-# React + Vite
+🎧 ZenMix
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Focus better. Relax deeper. Build your perfect soundscape.
 
-Currently, two official plugins are available:
+<!--
+TODO: Take a screenshot of your app, save it as 'screenshot.png' in your repo,
+and uncomment the line below:
+-->
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+<!--  -->
 
-## React Compiler
+📖 About
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+ZenMix is a modular, open-source ambient sound mixer. Whether you need the sound of heavy rain to study, or a crackling fire to relax, ZenMix lets you layer and mix sounds directly in your browser.
 
-## Expanding the ESLint configuration
+We built this because most "ambient" websites don't let you control the volume of individual elements. ZenMix does.
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+🛠 Tech Stack
+
+Framework: React + Vite (Fast & Lightweight)
+
+Styling: Tailwind CSS v4
+
+Icons: Lucide React
+
+State: React Hooks (No external state libraries)
+
+🚀 Getting Started
+
+You can run this project locally in about 2 minutes.
+
+Clone the repo
+
+git clone [https://github.com/YOUR_USERNAME/zenmix.git](https://github.com/YOUR_USERNAME/zenmix.git)
+cd zenmix
+
+Install dependencies
+
+npm install
+
+Start the app
+
+npm run dev
+
+🤝 How to Contribute (The Fun Part)
+
+We designed ZenMix to be the easiest open source contribution you will ever make. You don't need to know complex React logic to add a new feature.
+
+Want to add a new Sound?
+
+You can add a new sound (e.g., "Coffee Shop", "Thunder", "White Noise") in 3 simple steps:
+
+1. Add the Audio File
+   Find a royalty-free MP3 (try Pixabay or Freesound) and drop it here:
+   public/sounds/your-sound.mp3
+
+2. Register the Sound
+   Open src/data/sounds.json and add a new object to the list:
+
+{
+"id": "coffee",
+"label": "Coffee Shop",
+"icon": "Coffee", // Pick an icon name from Lucide.dev
+"src": "/sounds/your-sound.mp3",
+"color": "bg-amber-700"
+}
+
+3. Submit a Pull Request
+   That's it! The app automatically renders a card for every entry in that JSON file.
+
+Want to Code?
+
+Check the Issues tab for ideas like:
+
+Adding a "Mute All" button.
+
+Adding a Pomodoro timer overlay.
+
+Saving the current mix to LocalStorage.
+
+📂 Project Structure
+
+/public
+/sounds <-- Put MP3s here
+/src
+/components <-- React Components (SoundCard, etc.)
+/data
+sounds.json <-- The "Database" (Edit this to add sounds)
+/hooks <-- Logic (useSounds)
+
+📄 License
+
+MIT License - go wild.
