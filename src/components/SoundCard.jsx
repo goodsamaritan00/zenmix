@@ -56,6 +56,27 @@ const SoundCard = ({ sound }) => {
   const handleVolumeChange = (e) => {
     setVolume(parseFloat(e.target.value));
   };
+  return (
+    <div
+      className={`
+        relative p-6 rounded-2xl transition-all duration-300 border border-transparent hover:-translate-y-2
+        ${
+          isPlaying
+            ? `${sound.color} shadow-lg scale-105`
+            : "bg-gray-800 hover:bg-gray-700"
+        }
+      `}
+    >
+      <div className="flex flex-col items-center gap-4">
+        <button
+          onClick={togglePlay}
+          className="p-4 rounded-full bg-white/10 hover:bg-white/20 transition-colors"
+        >
+          <IconComponent
+            size={48}
+            className={isPlaying ? "text-white" : "text-gray-400"}
+          />
+        </button>
 
   return (
     <div
