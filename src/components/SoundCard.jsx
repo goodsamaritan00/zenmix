@@ -82,7 +82,21 @@ const SoundCard = ({ sound, isPlaying, volume, onToggle, onVolumeChange }) => {
             onChange={(e) =>
               onVolumeChange(sound.id, parseFloat(e.target.value))
             }
-            className="w-full h-2 bg-gray-600 rounded-lg appearance-none cursor-pointer accent-white"
+            className="
+    w-full h-1 
+    bg-gray-600 rounded-lg 
+    appearance-none cursor-pointer 
+    accent-white
+    
+    /* Custom thumb styling using arbitrary variants for cross-browser support */
+    [&::-webkit-slider-thumb]:w-4 
+    [&::-webkit-slider-thumb]:h-4 
+    [&::-webkit-slider-thumb]:bg-white 
+    [&::-webkit-slider-thumb]:rounded-full 
+    [&::-webkit-slider-thumb]:appearance-none 
+    [&::-webkit-slider-thumb]:mt-[-0.15rem] /* Adjust vertical position */
+    [&::-webkit-slider-thumb]:shadow-lg
+"
           />
         </div>
       </div>
