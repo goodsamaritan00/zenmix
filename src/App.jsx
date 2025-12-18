@@ -1,16 +1,31 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import SoundCard from "./components/SoundCard";
 import PresetSelector from "./components/PresetSelector";
+import PomodoroButton from "./components/PomodoroButton";
+import PomodoroOverlay from "./components/PomodoroOverlay";
 import { useSounds } from "./hooks/useSounds";
 import { useActiveSounds } from "./hooks/useActiveSounds";
+import { usePomodoro } from "./hooks/usePomodoro"
 
 function App() {
-  const { sounds } = useSounds();
 
   // STATE: holds play status and volume for each sound
   // Format: { "rain": { isPlaying: false, volume: 0.5 }, "fire": ... }
   const [soundStates, setSoundStates] = useState({});
+
+  // STATE: toggle pomodoro overlay
+  // Format: true, false
+  const [isPomodoroOpen, setIsPomodoroOpen] = useState(false)
+
+  // STATE: set ding in active state when pomodoro is activated so it play when timer runs out
+  // Format: true, false
+  const [playDing, setPlayDing] = useState(false)
+  const dingRef = useRef(new Audio("./sounds/ding.mp3"));
   
+  // All sounds hook
+  const { sounds } = useSounds();
+
+  // Active sounds hook
   const {
     activeSounds,
     setActiveSounds,
@@ -18,8 +33,12 @@ function App() {
     toggleActiveSoundAll,
   } = useActiveSounds(setSoundStates);
 
+  // Pomodoro hook
+  const pomodoroState = usePomodoro();
+
   // STATE: holds value in the search Bar
   const [search, setSearch] = useState('')
+
   // Helper to get a sound's state (or defaults if missing)
   const getSoundState = (id) =>
     soundStates[id] || { isPlaying: false, volume: 0.5 };
@@ -108,8 +127,25 @@ function App() {
   }, [activeSounds, toggleActiveSoundAll]);
 
 
+  // Play ding on timeLeft == 0
+  useEffect(() => { 
+    if (!playDing || pomodoroState.timeLeft > 0) { 
+        return 
+      } else { 
+        dingRef.current.currentTime = 0 
+        dingRef.current.volume = 0.5
+        dingRef.current.play() 
+    }}, [playDing, pomodoroState.timeLeft])
+
   return (
     <div className="min-h-screen bg-gray-900 text-white p-3 sm:p-5 md:p-10 font-sans">
+      {/* Pomodoro overlay */}
+      {isPomodoroOpen && <PomodoroOverlay {...pomodoroState} setIsPomodoroOpen={setIsPomodoroOpen} setPlayDing={setPlayDing} dingRef={dingRef} />}
+
+      {/* Pomodoro nav button */}
+      <PomodoroButton {...pomodoroState}  setIsPomodoroOpen={setIsPomodoroOpen} />
+
+      {/* Header section */}
       <header className="mb-10 text-center">
         <h1 className="text-2xl md:text-4xl font-bold mb-2 tracking-tight text-blue-100">
           ZenMix
@@ -118,14 +154,13 @@ function App() {
       </header>
 
       {/* Search Bar */}
-        <div className="flex justify-center">
-          <input
-           placeholder="🔍 Search for sounds"
-           className="bg-white/10 hover:bg-white/20 rounded-2xl text-center w-2/5 h-8 mb-10"
-           onChange={(e) => {setSearch(e.target.value)}}
-          />
-        </div>
-
+      <div className="flex justify-center">
+        <input
+          placeholder="🔍 Search for sounds"
+          className="bg-white/10 hover:bg-white/20 rounded-2xl text-center w-2/5 h-8 mb-10"
+          onChange={(e) => {setSearch(e.target.value)}}
+        />
+      </div>
 
       {/* Preset Selector */}
       <PresetSelector setActiveSounds={setActiveSounds} onSelectPreset={handleSelectPreset} />
