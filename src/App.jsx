@@ -135,10 +135,14 @@ function App() {
 
   function handleResume(){
     setHasResponded(true)
-    for(let i in Object.keys(soundStates)){
-      soundStates[Object.keys(soundStates)[i]].isPlaying = true
-    }
-    localStorage.setItem("zenmix-state", JSON.stringify(soundStates))
+    setSoundStates((prevStates) => {
+      const updatedStates = { ...prevStates };
+      Object.keys(updatedStates).forEach((key) => {
+        updatedStates[key].isPlaying = true;
+      });
+      localStorage.setItem("zenmix-state", JSON.stringify(updatedStates));
+      return updatedStates;
+    });
   }
 
   return (
