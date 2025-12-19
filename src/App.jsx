@@ -202,7 +202,7 @@ function App() {
           <p className="text-gray-400">Mix your perfect soundscape.</p>
           <button
             onClick={toggleMute}
-            className={`absolute right-0 p-3 rounded-full transition-colors duration-300 ${
+            className={`absolute right-1/100 top-1/12 p-3 rounded-full transition-colors duration-300 ${
               isMuted
                 ? "bg-red-600 hover:bg-red-700"
                 : "bg-white/10 hover:bg-white/20"
