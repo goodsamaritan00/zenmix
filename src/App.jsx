@@ -4,8 +4,9 @@ import PresetSelector from "./components/PresetSelector";
 import { useSounds } from "./hooks/useSounds";
 import { useActiveSounds } from "./hooks/useActiveSounds";
 import { useTheme } from "./context/ThemeContext";
-import { X, Play, Sun, Moon } from "lucide-react";
+import { X, Play, Sun, Moon, HelpCircle, CircleHelp } from "lucide-react";
 import { Volume2, VolumeX } from "lucide-react";
+import HelpModal from "./components/HelpModal";
 
 function App() {
   const { sounds } = useSounds();
@@ -14,22 +15,22 @@ function App() {
   const [hasSaveData, setHasSaveData] = useState(false);
   const [hasResponded, setHasResponded] = useState(false);
   const [isMuted, setIsMuted] = useState(false);
+  const [isHelpOpen, setIsHelpOpen] = useState(false);
 
   // STATE: holds play status and volume for each sound
   const [soundStates, setSoundStates] = useState(() => {
     const saved = localStorage.getItem("zenmix-state");
-    
-    //modifies the saved object from localStorage  
-    function modifyLastSave(){
-      saved.includes("true") ? setHasSaveData(true) : setHasSaveData(false)
-      const savedData = JSON.parse(saved)
-      const keys = Object.keys(savedData)
-      for (let i in keys){
-        if(savedData[keys[i]].isPlaying){
-          savedData[keys[i]].isPlaying = false
-        }
-        else{
-          delete savedData[keys[i]]
+
+    //modifies the saved object from localStorage
+    function modifyLastSave() {
+      saved.includes("true") ? setHasSaveData(true) : setHasSaveData(false);
+      const savedData = JSON.parse(saved);
+      const keys = Object.keys(savedData);
+      for (let i in keys) {
+        if (savedData[keys[i]].isPlaying) {
+          savedData[keys[i]].isPlaying = false;
+        } else {
+          delete savedData[keys[i]];
         }
       }
       return savedData;
@@ -51,7 +52,7 @@ function App() {
 
   // STATE: holds value in the search Bar
   const [search, setSearch] = useState("");
-  
+
   // Helper to get a sound's state (or defaults if missing)
   const getSoundState = (id) =>
     soundStates[id] || { isPlaying: false, volume: 0.5 };
@@ -131,8 +132,8 @@ function App() {
     return () => window.removeEventListener("keydown", handleToggleActive);
   }, [activeSounds, toggleActiveSoundAll]);
 
-  function handleResume(){
-    setHasResponded(true)
+  function handleResume() {
+    setHasResponded(true);
     setSoundStates((prevStates) => {
       const updatedStates = { ...prevStates };
       Object.keys(updatedStates).forEach((key) => {
@@ -151,27 +152,44 @@ function App() {
           <div
             className={`flex items-center gap-4 pl-6 pr-4 py-3 
               backdrop-blur-md border rounded-full shadow-lg ring-1
-              ${theme === 'dark' 
-                ? 'bg-gray-800/95 border-blue-500/30 shadow-[0_0_20px_-5px_rgba(59,130,246,0.3)] ring-white/10' 
-                : 'bg-white/95 border-blue-400 shadow-[0_0_20px_-5px_rgba(59,130,246,0.2)] ring-black/10'
+              ${
+                theme === "dark"
+                  ? "bg-gray-800/95 border-blue-500/30 shadow-[0_0_20px_-5px_rgba(59,130,246,0.3)] ring-white/10"
+                  : "bg-white/95 border-blue-400 shadow-[0_0_20px_-5px_rgba(59,130,246,0.2)] ring-black/10"
               }`}
           >
             <div className="flex items-center gap-3">
-              <div className={`flex items-center justify-center w-6 h-6 rounded-full 
-                ${theme === 'dark' ? 'bg-blue-500/20 text-blue-400' : 'bg-blue-400/20 text-blue-600'}`}>
+              <div
+                className={`flex items-center justify-center w-6 h-6 rounded-full 
+                ${
+                  theme === "dark"
+                    ? "bg-blue-500/20 text-blue-400"
+                    : "bg-blue-400/20 text-blue-600"
+                }`}
+              >
                 <Play size={12} fill="currentColor" />
               </div>
-              <span className={`text-sm font-medium ${theme === 'dark' ? 'text-gray-100' : 'text-gray-800'}`}>
+              <span
+                className={`text-sm font-medium ${
+                  theme === "dark" ? "text-gray-100" : "text-gray-800"
+                }`}
+              >
                 Resume session?
               </span>
             </div>
 
-            <div className={`h-4 w-px ${theme === 'dark' ? 'bg-white/10' : 'bg-gray-300'}`} />
+            <div
+              className={`h-4 w-px ${
+                theme === "dark" ? "bg-white/10" : "bg-gray-300"
+              }`}
+            />
 
             <button
               onClick={handleResume}
               className={`text-sm font-bold transition-colors ${
-                theme === 'dark' ? 'text-blue-400 hover:text-blue-300' : 'text-blue-600 hover:text-blue-700'
+                theme === "dark"
+                  ? "text-blue-400 hover:text-blue-300"
+                  : "text-blue-600 hover:text-blue-700"
               }`}
             >
               Resume
@@ -180,9 +198,9 @@ function App() {
             <button
               onClick={() => setHasResponded(true)}
               className={`p-1 ml-1 rounded-full transition-all ${
-                theme === 'dark' 
-                  ? 'text-gray-500 hover:text-white hover:bg-white/10' 
-                  : 'text-gray-400 hover:text-gray-700 hover:bg-gray-200'
+                theme === "dark"
+                  ? "text-gray-500 hover:text-white hover:bg-white/10"
+                  : "text-gray-400 hover:text-gray-700 hover:bg-gray-200"
               }`}
             >
               <X size={16} />
@@ -192,22 +210,26 @@ function App() {
       )}
 
       {/* PAPER/LATTE BACKGROUND for light mode, dark gray for dark mode */}
-      <div className={`min-h-screen transition-colors duration-300 p-3 sm:p-5 md:p-10 font-sans
-        ${theme === 'dark' 
-          ? 'bg-gray-900 text-white' 
-          : 'bg-orange-50 text-stone-800'
-        }`}>
-        
+      <div
+        className={`min-h-screen transition-colors duration-300 p-3 sm:p-5 md:p-10 font-sans
+        ${
+          theme === "dark"
+            ? "bg-gray-900 text-white"
+            : "bg-orange-50 text-stone-800"
+        }`}
+      >
         <header className="mb-10 text-center relative">
-          <h1 className={`text-2xl md:text-4xl font-bold mb-2 tracking-tight ${
-            theme === 'dark' ? 'text-blue-100' : 'text-stone-800'
-          }`}>
+          <h1
+            className={`text-2xl md:text-4xl font-bold mb-2 tracking-tight ${
+              theme === "dark" ? "text-blue-100" : "text-stone-800"
+            }`}
+          >
             ZenMix
           </h1>
-          <p className={theme === 'dark' ? 'text-gray-400' : 'text-stone-600'}>
+          <p className={theme === "dark" ? "text-gray-400" : "text-stone-600"}>
             Mix your perfect soundscape.
           </p>
-          
+
           {/* Toggle Buttons Container */}
           <div className="absolute right-0 top-0 flex items-center gap-2">
             {/* Mute Button */}
@@ -215,34 +237,60 @@ function App() {
               onClick={toggleMute}
               className={`p-2.5 rounded-full transition-colors duration-300 ${
                 isMuted
-                  ? theme === 'dark' 
-                    ? 'bg-red-600 hover:bg-red-700' 
-                    : 'bg-red-500 hover:bg-red-600'
-                  : theme === 'dark' 
-                    ? 'bg-white/10 hover:bg-white/20' 
-                    : 'bg-stone-700/10 hover:bg-stone-700/20'
+                  ? theme === "dark"
+                    ? "bg-red-600 hover:bg-red-700"
+                    : "bg-red-500 hover:bg-red-600"
+                  : theme === "dark"
+                  ? "bg-white/10 hover:bg-white/20"
+                  : "bg-stone-700/10 hover:bg-stone-700/20"
               }`}
               aria-label={isMuted ? "Unmute all sounds" : "Mute all sounds"}
               title={isMuted ? "Unmute all sounds" : "Mute all sounds"}
             >
-              <MuteIcon size={20} className={theme === 'dark' ? 'text-white' : 'text-stone-800'} />
+              <MuteIcon
+                size={20}
+                className={theme === "dark" ? "text-white" : "text-stone-800"}
+              />
             </button>
-            
+
             {/* Theme Toggle Button */}
             <button
               onClick={toggleTheme}
               className={`p-2.5 rounded-full transition-colors ${
-                theme === 'dark' 
-                  ? 'bg-white/10 hover:bg-white/20' 
-                  : 'bg-stone-700/10 hover:bg-stone-700/20'
+                theme === "dark"
+                  ? "bg-white/10 hover:bg-white/20"
+                  : "bg-stone-700/10 hover:bg-stone-700/20"
               }`}
               aria-label="Toggle Theme"
-              title={theme === 'dark' ? "Switch to light mode" : "Switch to dark mode"}
+              title={
+                theme === "dark"
+                  ? "Switch to light mode"
+                  : "Switch to dark mode"
+              }
             >
-              {theme === 'dark' 
-                ? <Sun size={20} className="text-orange-400" /> 
-                : <Moon size={20} className="text-stone-700" />}
+              {theme === "dark" ? (
+                <Sun size={20} className="text-orange-400" />
+              ) : (
+                <Moon size={20} className="text-stone-700" />
+              )}
             </button>
+
+            {/* Help Modal Toggle Button */}
+            <button
+              onClick={() => setIsHelpOpen(true)}
+              className={`p-2.5 rounded-full transition-colors ${
+                theme === "dark"
+                  ? "bg-white/10 hover:bg-white/20"
+                  : "bg-stone-700/10 hover:bg-stone-700/20"
+              }`}
+              title="Help & Shortcuts"
+            >
+              <CircleHelp size={20} />
+            </button>
+            <HelpModal
+              isOpen={isHelpOpen}
+              onClose={() => setIsHelpOpen(false)}
+            />
           </div>
         </header>
 
@@ -251,9 +299,10 @@ function App() {
           <input
             placeholder="🔍 Search for sounds"
             className={`rounded-2xl text-center w-2/5 h-10 mb-10 transition-colors placeholder:text-stone-600 dark:placeholder:text-gray-400 focus:outline-none focus:ring-2 px-4
-              ${theme === 'dark'
-                ? 'bg-white/10 hover:bg-white/20 text-white border-none focus:ring-blue-400'
-                : 'bg-white text-stone-800 border border-stone-300 hover:bg-stone-50 hover:border-stone-400 focus:ring-blue-400'
+              ${
+                theme === "dark"
+                  ? "bg-white/10 hover:bg-white/20 text-white border-none focus:ring-blue-400"
+                  : "bg-white text-stone-800 border border-stone-300 hover:bg-stone-50 hover:border-stone-400 focus:ring-blue-400"
               }`}
             onChange={(e) => {
               setSearch(e.target.value);
